@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: hello-app-prd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-app-prd
+  template:
+    metadata:
+      labels:
+        app: hello-app-prd
+    spec:
+      containers:
+      - name: hello-app-prd-pod
+        image: duejone0/hello-app:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: hello-app-prd-service
+spec:
+  selector:
+    app: hello-app-prd
+  ports: 
+  - name: http
+    protocol: TCP
+    port: 9000
+    targetPort: 8080
+  type: ClusterIP
